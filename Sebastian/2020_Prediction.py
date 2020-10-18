@@ -25,21 +25,21 @@ def election_predict(Zip, Occupation, Amount):
         #Creates the encoder object.
         encoder = LabelEncoder()
         #Imports the encoded attributes from our original model.
-        encoder.classes_ = np.load(f'encoder{column}.npy', allow_pickle=True)
+        encoder.classes_ = np.load(f'Model Encoders/encoder{column}.npy', allow_pickle=True)
         #Creates a colmn with the encoded values.
         encoded_df[column] = encoder.transform(input_df[column])
 
     #Scaler improrts the scaler parameters from our original model.
-    X_scaler_USER = MinMaxScaler().fit(pd.read_pickle('X_scaler.pkl'))
+    X_scaler_USER = MinMaxScaler().fit(pd.read_pickle('https://election-data-2020-red-raiders.s3.us-east-2.amazonaws.com/X_scaler.pkl'))
     #Scales the user input parameters.
     X_USER_scaled = X_scaler_USER.transform(encoded_df)
-    
+   
     #model prediction.
     encoded_predictions = model.predict_classes(X_USER_scaled)
 
     #original encoder of campaign.
     encoder_campign = LabelEncoder()
-    encoder_campign.classes_ = np.load(f'encoderCampaign.npy', allow_pickle=True)
+    encoder_campign.classes_ = np.load(f'Model Encoders/encoderCampaign.npy', allow_pickle=True)
 
     #Decodes the prediction labels.
     prediction_labels = encoder_campign.inverse_transform(encoded_predictions)
